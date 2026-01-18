@@ -1,5 +1,6 @@
-#Backend Structure
-
+# Backend Structure
+##
+```
 /Backend
 ├── /src
 │   ├── /config             # Database & OAuth configurations
@@ -16,3 +17,4 @@
 ├── .gitignore              # Files to be ignored by Git
 ├── package.json            # Scripts & Dependencies
 └── Readme.md               # Project documentation
+
