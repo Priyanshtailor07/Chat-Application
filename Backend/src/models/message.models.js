@@ -27,11 +27,11 @@ const messageSchema=new mongoose.Schema({
 
      status:{
         type:String,
-        enum:["sent",delivered],
+        enum:["sent","delivered"],
         default:"sent",
      },
         // for group receiver is array
-     receiver:[{
+     readBy:[{
             type:mongoose.Schema.Types.ObjectId,
             ref:"User"
      }],
@@ -48,3 +48,5 @@ const messageSchema=new mongoose.Schema({
      
 
 },{timestamps:true})
+
+export const Message =mongoose.model("Message",messageSchema)
