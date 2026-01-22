@@ -129,4 +129,10 @@ const googleCallback = async (req, res) => {
 };
 
 
-export { registerUser, loginUser, googleCallback };
+const getCurrentUser = async (req, res) => {
+    return res
+        .status(200)
+        .json({ user: req.user, message: "User fetched successfully" });
+}
+
+export { registerUser, loginUser, googleCallback, getCurrentUser };
