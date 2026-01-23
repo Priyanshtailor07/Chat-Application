@@ -5,12 +5,20 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const clientID = process.env.GOOGLE_CLIENT_ID?.trim();
+const clientSecret = process.env.GOOGLE_CLIENT_SECRET?.trim();
+const callbackURL = process.env.GOOGLE_CALLBACK_URL?.trim() || '/auth/google/callback';
+
+console.log("GOOGLE_CLIENT_ID:", clientID);
+console.log("GOOGLE_CLIENT_SECRET:", clientSecret ? "Loaded" : "Not Loaded");
+console.log("GOOGLE_CALLBACK_URL:", callbackURL);
+
 passport.use(
     new GoogleStrategy(
         {
-            clientID: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: process.env.GOOGLE_CALLBACK_URL || '/auth/google/callback',
+            clientID,
+            clientSecret,
+            callbackURL,
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
