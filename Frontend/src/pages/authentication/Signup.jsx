@@ -5,7 +5,7 @@ import {useNavigate} from 'react-router-dom'
 
 const Signup = () => {
 
-  const [form,setFormData]=useState({username:'',email:'',password:''});
+  const [formData,setFormData]=useState({username:'',email:'',password:''});
   const {loading,error}=useSelector((state=>state.auth));
   const dispatch=useDispatch();
   const navigate=useNavigate();
@@ -37,10 +37,10 @@ const Signup = () => {
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600 mb-2">Or continue with</p>
           <a 
-            href="http://localhost:4002/api/auth/google" 
+            href="http://localhost:4002/api/auth/google/callback" 
             className="inline-block w-full bg-red-500 text-white p-2 rounded hover:bg-red-600"
           >
-            Google OAuth
+           Signup With Google
           </a>
         </div>
       </form>

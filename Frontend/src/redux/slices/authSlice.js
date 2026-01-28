@@ -2,14 +2,14 @@
 import { createSlice,createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
 import axios from 'axios';
 import { startTransition } from "react";
-
+const API=axios.create({baseURL:"http://localhost:4000"})
 //Async thunk for register
 
 export const registerUser=createAsyncThunk(
     "auth/registerUser",
         async(userData,{rejctedWithValue})=>{
             try{
-                const response=await axios.post("/api/auth/register",userData);
+                const response=await API.post("/api/auth/register",userData);
                 return response.data;
             }
             catch(error){
@@ -24,10 +24,13 @@ export const registerUser=createAsyncThunk(
 export const loginUser= createAsyncThunk(
 
     'auth/loginUser',
-    async ({ username,password},{rejectWithValue})=>{
+    async (credentials,{rejectWithValue})=>{
         try{
             // API response
-            const response =await axios.post('/api/auth/login',{username,password});
+              console.log("Data being sent to backend:", credentials);
+        
+            const response =await API.post('/api/auth/login',credentials);
+            console.log(response.data);
             return response.data;
         }
         catch(error){
@@ -87,7 +90,7 @@ const authSlice= createSlice({
                 state.isLoading=false;
                 state.user= action.payload;
                 state.token=action.payload.token;
-                            //here we have to store the token
+                //here we have to store the token
                 localStorage.setItem("user",JSON.stringify(action.payload));
                 localStorage.setItem("token",action.payload.token);
                 state.isAuthenticated=true;
