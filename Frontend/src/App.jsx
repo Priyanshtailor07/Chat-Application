@@ -7,7 +7,7 @@ import './App.css'
 import { BrowserRouter as Router,Routes,Route,Navigate } from 'react-router-dom';
 import Login from "./pages/authentication/Login.jsx";
 import Signup from "./pages/authentication/Signup.jsx";
-import ChatPage from "./pages/home/ChatPage.jsx";
+import ChatPage from './pages/home/ChatPage.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 
 

@@ -45,11 +45,9 @@ export const loginUser= createAsyncThunk(
 const authSlice= createSlice({
     name:'auth',
     initialState:{
-        user:JSON.parse(localStorage.getItem("user"))|| null,
-        token:localStorage.getItem("token")|| null,
-        isAuthenticated:false,
-        isLoading:false,
-        error:null,
+           user: JSON.parse(localStorage.getItem("user")) || null,
+  token: localStorage.getItem("token") || null,
+  loading: false,
     },
         reducers:{
             logout:(state)=>{
@@ -86,16 +84,13 @@ const authSlice= createSlice({
                 state.isLoading=true;
                 state.error=null
             })
-            .addCase(loginUser.fulfilled,(state,action)=>{
-                state.isLoading=false;
-                state.user= action.payload;
-                state.token=action.payload.token;
-                //here we have to store the token
-                localStorage.setItem("user",JSON.stringify(action.payload));
-                localStorage.setItem("token",action.payload.token);
-                state.isAuthenticated=true;
-    
-            })
+                    .addCase(loginUser.fulfilled, (state, action) => {
+                    state.loading = false;
+                    state.token = action.payload.token;
+                    state.user = action.payload.user;
+                    localStorage.setItem("token", action.payload.token); //
+                    localStorage.setItem("user", JSON.stringify(action.payload.user)); //
+                    })
             .addCase(loginUser.rejected,(state,action)=>{
                 state.isLoading =false;
                 state.error =action.payload|| 'Login failed';
