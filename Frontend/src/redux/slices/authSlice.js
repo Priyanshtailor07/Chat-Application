@@ -1,19 +1,22 @@
 
-import { createSlice,createAsyncThunk, isRejectedWithValue } from "@reduxjs/toolkit";
-import axios from 'axios';
-import { startTransition } from "react";
-const API=axios.create({baseURL:"http://localhost:4000"})
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+const API = axios.create({
+    baseURL: "http://localhost:4000",
+    withCredentials: true
+});
 //Async thunk for register
 
 export const registerUser=createAsyncThunk(
     "auth/registerUser",
-        async(userData,{rejctedWithValue})=>{
+        async(userData,{rejectWithValue})=>{
             try{
                 const response=await API.post("/api/auth/register",userData);
                 return response.data;
             }
             catch(error){
-                return rejctedWithValue(error.response.data.message|| "Registration failed");
+                return rejectWithValue(error.response?.data?.message || "Registration failed");
             }
         },
 );
@@ -34,7 +37,7 @@ export const loginUser= createAsyncThunk(
             return response.data;
         }
         catch(error){
-            return rejctedWithValue(error.response.data.message|| "Login failed");
+            return rejectWithValue(error.response?.data?.message || "Login failed");
         }
     }
 
@@ -45,16 +48,18 @@ export const loginUser= createAsyncThunk(
 const authSlice= createSlice({
     name:'auth',
     initialState:{
-           user: JSON.parse(localStorage.getItem("user")) || null,
-  token: localStorage.getItem("token") || null,
-  loading: false,
+                user: JSON.parse(localStorage.getItem("user")) || null,
+                accessToken: localStorage.getItem("accessToken") || null,
+                refreshToken: localStorage.getItem("refreshToken") || null,
+                loading: false,
     },
         reducers:{
             logout:(state)=>{
                 state.user=null;
                 state.isAuthenticated=false;
                 state.error=null;
-                state.token=null;
+                state.accessToken=null;
+                state.refreshToken=null;
                 
 
                 // removing local storage here
@@ -66,33 +71,33 @@ const authSlice= createSlice({
 
             builder
             .addCase(registerUser.pending, (state) => {
-                state.isLoading= true;
+                state.loading= true;
             })
             .addCase(registerUser.fulfilled, (state, action) => {
-                state.isLoading= false;
-                state.user = action.payload;
-                state.token = action.payload.token;
-                localStorage.setItem("user", JSON.stringify(action.payload));
-                localStorage.setItem("token", action.payload.token);
+                state.loading= false;
+                state.user = action.payload.user;
+                localStorage.setItem("user", JSON.stringify(action.payload.user));
             })
             .addCase(registerUser.rejected, (state, action) => {
-                state.isLoading= false;
+                state.loading= false;
                 state.error = action.payload;
             })            
             
            .addCase(loginUser.pending,(state)=>{
-                state.isLoading=true;
+                state.loading=true;
                 state.error=null
             })
                     .addCase(loginUser.fulfilled, (state, action) => {
                     state.loading = false;
-                    state.token = action.payload.token;
+                    state.accessToken = action.payload.accessToken;
+                    state.refreshToken = action.payload.refreshToken;
                     state.user = action.payload.user;
-                    localStorage.setItem("token", action.payload.token); //
-                    localStorage.setItem("user", JSON.stringify(action.payload.user)); //
+                    localStorage.setItem("accessToken", action.payload.accessToken);
+                    localStorage.setItem("refreshToken", action.payload.refreshToken);
+                    localStorage.setItem("user", JSON.stringify(action.payload.user));
                     })
             .addCase(loginUser.rejected,(state,action)=>{
-                state.isLoading =false;
+                state.loading =false;
                 state.error =action.payload|| 'Login failed';
                 state.user=null;
                 state.isAuthenticated=false;

@@ -1,31 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../../redux/slices/authSlice';
-import { useNavigate, Link, useSearchParams } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../redux/slices/authSlice";
+import { useNavigate, Link } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 const Login = () => {
   const [showPassword,setShowPassword]=useState(false);
-  const [searchParams]=useSearchParams();
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const { loading, error } = useSelector((state) => state.auth);
-  const {token}=useSelector((state)=>state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
- 
-  useEffect(()=>{
-    // 1. Look for the token in the URL after Google redirect
-    const token = searchParams.get('token');
-    
-    if (token) {
-      // 2. Dispatch to Redux to save the session
-      // You may need to fetch the user profile here or decode the JWT
-      dispatch(setCredentials({ token })); 
-      
-      // 3. Clean up the URL and move to chat
-      navigate('/chat', { replace: true });
-    }
-  },[token,navigate,dispatch]);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
