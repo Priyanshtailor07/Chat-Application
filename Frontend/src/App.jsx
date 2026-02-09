@@ -9,6 +9,7 @@ import Login from "./pages/authentication/Login.jsx";
 import Signup from "./pages/authentication/Signup.jsx";
 import ChatPage from './pages/home/ChatPage.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
+import Settings from "./pages/home/Settings.jsx";
 
 
 function App() {
@@ -27,6 +28,15 @@ function App() {
           element={
             <ProtectedRoute>
               <ChatPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <Settings />
             </ProtectedRoute>
           }
         />
